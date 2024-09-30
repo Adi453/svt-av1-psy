@@ -71,7 +71,7 @@ endif()
 set(all_files
     ../API/EbDebugMacros.h
     ../API/EbSvtAv1.h
-    ../API/EbSvtAv1PsyEnc.h
+    ../API/EbSvtAv1Enc.h
     ../API/EbSvtAv1ErrorCodes.h
     ../API/EbSvtAv1ExtFrameBuf.h
     ../API/EbSvtAv1Formats.h
