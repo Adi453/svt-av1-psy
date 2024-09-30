@@ -625,7 +625,7 @@ if(SVT_AV1_PGO)
         ${CMAKE_COMMAND} ${CMAKE_BINARY_DIR} -DSVT_INTERNAL_PGO_GENERATE=ON -DSVT_INTERNAL_PGO_USE=OFF
         COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
         --clean-first
-        --target SvtAv1EncApp
+        --target SvtAv1PsyEncApp
         COMMENT "Compiling with PGO generate"
         VERBATIM
         USES_TERMINAL
@@ -644,7 +644,7 @@ if(SVT_AV1_PGO)
         COMMAND ${PROFILE_MERGE_CMD}
         COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
         --clean-first
-        --target SvtAv1EncApp
+        --target SvtAv1PsyEncApp
         COMMENT "Compiling PGO use"
         COMMAND_EXPAND_LISTS
         VERBATIM
@@ -656,7 +656,7 @@ if(SVT_AV1_PGO)
             ${PROJECT_SOURCE_DIR}/Build/pgohelper.cmake
             ${CMAKE_BINARY_DIR}
             ${SVT_AV1_PGO_CUSTOM_VIDEOS}
-            $<TARGET_FILE:SvtAv1EncApp>
+            $<TARGET_FILE:SvtAv1PsyEncApp>
             COMMENT "Generating PGO profile"
             VERBATIM
             USES_TERMINAL
@@ -673,7 +673,7 @@ if(SVT_AV1_PGO)
             ${PROJECT_SOURCE_DIR}/Build/pgohelper.cmake
             ${CMAKE_BINARY_DIR}
             ${CMAKE_BINARY_DIR}/objective-1-fast
-            $<TARGET_FILE:SvtAv1EncApp>
+            $<TARGET_FILE:SvtAv1PsyEncApp>
             COMMENT "Generating PGO profile"
             DEPENDS DownloadObjOneFast
             VERBATIM
