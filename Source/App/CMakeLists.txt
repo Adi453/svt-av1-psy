@@ -91,25 +91,25 @@ set(all_files
     )
 
 # App Source Files
-add_executable(SvtAv1EncApp
+add_executable(SvtAv1PsyEncApp
     ${all_files})
 
 if(TARGET safestringlib)
-    target_sources(SvtAv1EncApp PRIVATE $<TARGET_OBJECTS:safestringlib>)
+    target_sources(SvtAv1PsyEncApp PRIVATE $<TARGET_OBJECTS:safestringlib>)
 endif()
 
 #********** SET COMPILE FLAGS************
 # Link the Encoder App
-target_link_libraries(SvtAv1EncApp
+target_link_libraries(SvtAv1PsyEncApp
         SvtAv1Enc
         ${LIBDOVI_LIBRARY}
         ${LIBHDR10PLUS_RS_LIBRARY})
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
-    target_link_libraries(SvtAv1EncApp ${PLATFORM_LIBS})
+    target_link_libraries(SvtAv1PsyEncApp ${PLATFORM_LIBS})
 elseif(UNIX)
-    target_link_libraries(SvtAv1EncApp
+    target_link_libraries(SvtAv1PsyEncApp
         pthread
         m)
 endif()
 
-install(TARGETS SvtAv1EncApp RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})
+install(TARGETS SvtAv1PsyEncApp RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR})
