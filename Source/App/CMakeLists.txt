@@ -71,7 +71,7 @@ endif()
 set(all_files
     ../API/EbDebugMacros.h
     ../API/EbSvtAv1.h
-    ../API/EbSvtAv1Enc.h
+    ../API/EbSvtAv1PsyEnc.h
     ../API/EbSvtAv1ErrorCodes.h
     ../API/EbSvtAv1ExtFrameBuf.h
     ../API/EbSvtAv1Formats.h
@@ -101,7 +101,7 @@ endif()
 #********** SET COMPILE FLAGS************
 # Link the Encoder App
 target_link_libraries(SvtAv1PsyEncApp
-        SvtAv1Enc
+        SvtAv1PsyEnc
         ${LIBDOVI_LIBRARY}
         ${LIBHDR10PLUS_RS_LIBRARY})
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Android")
