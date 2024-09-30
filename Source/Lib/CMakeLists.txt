@@ -49,11 +49,11 @@ include_directories(${PROJECT_SOURCE_DIR}/Source/API/
     ${PROJECT_SOURCE_DIR}/Source/Lib/C_DEFAULT/
     ${PROJECT_SOURCE_DIR}/third_party/fastfeat/)
 
-add_library(SvtAv1Enc)
+add_library(SvtAv1PsyEnc)
 # Required for cmake to be able to tell Xcode how to link all of the object files
 if(CMAKE_GENERATOR STREQUAL "Xcode")
     file(WRITE ${PROJECT_BINARY_DIR}/dummy.c "")
-    target_sources(SvtAv1Enc PRIVATE ${PROJECT_BINARY_DIR}/dummy.c)
+    target_sources(SvtAv1PsyEnc PRIVATE ${PROJECT_BINARY_DIR}/dummy.c)
 endif()
 
 add_subdirectory(C_DEFAULT)
@@ -61,7 +61,7 @@ add_subdirectory(Codec)
 add_subdirectory(Globals)
 if(NOT COMPILE_C_ONLY AND HAVE_X86_PLATFORM)
     # Include Encoder Subdirectories
-    target_include_directories(SvtAv1Enc PRIVATE
+    target_include_directories(SvtAv1PsyEnc PRIVATE
         ${PROJECT_SOURCE_DIR}/Source/Lib/ASM_SSE2/
         ${PROJECT_SOURCE_DIR}/Source/Lib/ASM_SSSE3/
         ${PROJECT_SOURCE_DIR}/Source/Lib/ASM_SSE4_1/
@@ -75,57 +75,57 @@ if(NOT COMPILE_C_ONLY AND HAVE_X86_PLATFORM)
         add_subdirectory(ASM_AVX512)
     endif()
 elseif(NOT COMPILE_C_ONLY AND HAVE_ARM_PLATFORM)
-    target_include_directories(SvtAv1Enc PRIVATE ${PROJECT_SOURCE_DIR}/Source/Lib/ASM_NEON/)
+    target_include_directories(SvtAv1PsyEnc PRIVATE ${PROJECT_SOURCE_DIR}/Source/Lib/ASM_NEON/)
     add_subdirectory(ASM_NEON)
 endif()
 
 # Encoder Lib Source Files
-target_sources(SvtAv1Enc PRIVATE
+target_sources(SvtAv1PsyEnc PRIVATE
     $<TARGET_OBJECTS:FASTFEAT>
     $<TARGET_OBJECTS:GLOBALS>
     $<TARGET_OBJECTS:CODEC>
     $<TARGET_OBJECTS:C_DEFAULT>)
 if(NOT COMPILE_C_ONLY AND HAVE_X86_PLATFORM)
-    target_sources(SvtAv1Enc PRIVATE
+    target_sources(SvtAv1PsyEnc PRIVATE
         $<TARGET_OBJECTS:ASM_SSE2>
         $<TARGET_OBJECTS:ASM_SSSE3>
         $<TARGET_OBJECTS:ASM_SSE4_1>
         $<TARGET_OBJECTS:ASM_AVX2>)
     if(ENABLE_AVX512)
-        target_sources(SvtAv1Enc PRIVATE
+        target_sources(SvtAv1PsyEnc PRIVATE
             $<TARGET_OBJECTS:ASM_AVX512>)
     endif()
 elseif(NOT COMPILE_C_ONLY AND HAVE_ARM_PLATFORM)
-    target_sources(SvtAv1Enc PRIVATE
+    target_sources(SvtAv1PsyEnc PRIVATE
         $<TARGET_OBJECTS:ASM_NEON>)
 endif()
 
 get_target_property(common_lib_source common_lib INTERFACE_SOURCES)
 if(common_lib_source)
-    target_sources(SvtAv1Enc PRIVATE ${common_lib_source})
+    target_sources(SvtAv1PsyEnc PRIVATE ${common_lib_source})
 endif()
 
-set_target_properties(SvtAv1Enc PROPERTIES VERSION ${ENC_VERSION})
-set_target_properties(SvtAv1Enc PROPERTIES SOVERSION ${ENC_VERSION_MAJOR})
-set_target_properties(SvtAv1Enc PROPERTIES C_VISIBILITY_PRESET hidden)
-target_link_libraries(SvtAv1Enc PUBLIC ${PLATFORM_LIBS})
+set_target_properties(SvtAv1PsyEnc PROPERTIES VERSION ${ENC_VERSION})
+set_target_properties(SvtAv1PsyEnc PROPERTIES SOVERSION ${ENC_VERSION_MAJOR})
+set_target_properties(SvtAv1PsyEnc PROPERTIES C_VISIBILITY_PRESET hidden)
+target_link_libraries(SvtAv1PsyEnc PUBLIC ${PLATFORM_LIBS})
 if(USE_EXTERNAL_CPUINFO)
-    target_link_libraries(SvtAv1Enc PRIVATE cpuinfo::cpuinfo)
+    target_link_libraries(SvtAv1PsyEnc PRIVATE cpuinfo::cpuinfo)
 elseif(NOT COMPILE_C_ONLY AND HAVE_X86_PLATFORM)
-    target_link_libraries(SvtAv1Enc PRIVATE cpuinfo_public)
+    target_link_libraries(SvtAv1PsyEnc PRIVATE cpuinfo_public)
 endif()
 
 set(ENC_PKG_CONFIG_EXTRA_CFLAGS "")
 if (BUILD_SHARED_LIBS)
-    target_compile_definitions(SvtAv1Enc
+    target_compile_definitions(SvtAv1PsyEnc
         PUBLIC EB_DLL
         PRIVATE EB_BUILDING_SHARED_LIBS)
     set(ENC_PKG_CONFIG_EXTRA_CFLAGS " -DEB_DLL")
 endif()
-install(TARGETS SvtAv1Enc
+install(TARGETS SvtAv1PsyEnc
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 
-configure_file(pkg-config.pc.in ${CMAKE_BINARY_DIR}/SvtAv1Enc.pc @ONLY)
-install(FILES ${CMAKE_BINARY_DIR}/SvtAv1Enc.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+configure_file(pkg-config.pc.in ${CMAKE_BINARY_DIR}/SvtAv1PsyEnc.pc @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/SvtAv1PsyEnc.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
